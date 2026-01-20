@@ -1,25 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
+import { publicRoutes } from './routes';
+import { useState, Fragment } from 'react';
+import { DefaultLayout } from '~/components/Layout';
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <Router>
+            <div className="App">
+                <h1>Welcome to Ben's project</h1>
+                <ul>
+                    {publicRoutes.map((route, index) => {
+                        const pageName = route.catagoryName;
+                        return (
+                            <li key={index}>
+                                <NavLink
+                                    className={({ isActive }) => {
+                                        return isActive ? 'activeCatagory' : undefined;
+                                    }}
+                                    to={route.path}
+                                >
+                                    {pageName}
+                                </NavLink>
+                            </li>
+                        );
+                    })}
+                </ul>
+            </div>
+            <Routes>
+                {publicRoutes.map((route, index) => {
+                    const Page = route.component;
+                    let Layout = DefaultLayout;
+                    if (route.layout) {
+                        Layout = route.layout;
+                    } else if (route.layout === null) {
+                        Layout = Fragment;
+                    }
+                    return (
+                        <Route
+                            key={index}
+                            path={route.path}
+                            element={
+                                <Layout>
+                                    <Page />
+                                </Layout>
+                            }
+                        />
+                    );
+                })}
+            </Routes>
+        </Router>
+    );
 }
 
 export default App;
