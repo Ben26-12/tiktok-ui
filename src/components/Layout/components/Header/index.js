@@ -1,5 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark, faColonSign } from '@fortawesome/free-solid-svg-icons';
+import {
+    faCircleQuestion,
+    faCircleXmark,
+    faEarthAsia,
+    faEllipsisVertical,
+    faKeyboard,
+} from '@fortawesome/free-solid-svg-icons';
 import { faMagnifyingGlass, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 import Tippy from '@tippyjs/react/headless';
@@ -10,16 +16,57 @@ import styles from './Header.module.scss';
 import { Wrapper as WrapperTippy } from '~/components/Popover';
 import { useEffect, useState } from 'react';
 import Button from '~/components/Button';
+import Menu from '~/components/Popover/Menu';
 const cx = classNames.bind(styles);
+const MENU_ITEMS = [
+    {
+        icon: <FontAwesomeIcon icon={faEarthAsia} />,
+        title: 'English',
+        children: {
+            title: 'Language',
+            data: [
+                {
+                    code: 'ENG',
+                    title: 'English',
+                    children: {
+                        data: [
+                            {
+                                code: 'US',
+                                title: 'American',
+                            },
+                            {
+                                code: 'UK',
+                                title: 'English',
+                            },
+                        ],
+                    },
+                },
+                {
+                    code: 'VIE',
+                    title: 'Tiếng Việt',
+                },
+                {
+                    code: 'SPA',
+                    title: 'Spanish',
+                },
+            ],
+        },
+    },
+    {
+        icon: <FontAwesomeIcon icon={faCircleQuestion} />,
+        title: 'Feedback and help',
+        to: '/feedback',
+    },
+    {
+        icon: <FontAwesomeIcon icon={faKeyboard} />,
+        title: 'Keyboard shortcuts',
+    },
+];
 function Header() {
     const [searchResults, setSearchResults] = useState([]);
-
-    useEffect(() => {
-        setTimeout(() => {
-            setSearchResults([1, 2, 3]);
-        }, 2000);
-    }, []);
-
+    const onChange = (MenuItem) => {
+        console.log(MenuItem);
+    };
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
@@ -27,10 +74,11 @@ function Header() {
                     <img src={images.logo} alt="Tiktok" />
                 </div>
                 <Tippy
-                    visible={searchResults.length > 0}
                     interactive={true}
                     render={(attrs) => (
                         <div {...attrs} tabIndex={-1} className={cx('search-results')}>
+                            {/* tạo riêng là để viết css cho thằng .wrapper, không thì mỗi lần tạo 1 drop như này sẽ phải
+                            đi viết css cho nó w100% etc */}
                             <WrapperTippy>
                                 <h4 className={cx('search-title')}>Accounts</h4>
                                 <AccountItem />
@@ -54,9 +102,13 @@ function Header() {
                     </div>
                 </Tippy>
                 <div className={cx('actions')}>
-                    <Button outline>Log in</Button>
-                    <Button rounded>Upload</Button>
-                    <Button outline>both</Button>
+                    <Button text>Upload</Button>
+                    <Button primary>Log in</Button>
+                    <Menu items={MENU_ITEMS} onChange={onChange}>
+                        <button className={cx('more-btn')}>
+                            <FontAwesomeIcon icon={faEllipsisVertical} />
+                        </button>
+                    </Menu>
                 </div>
             </div>
         </header>
