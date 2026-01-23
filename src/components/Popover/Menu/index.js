@@ -30,9 +30,11 @@ function Menu({ children, items, onChange }) {
         history.pop();
         setHistory([...history]);
     };
+
     return (
         <Tippy
             interactive
+            visible
             offset={[12, 8]}
             delay={[0, 500]}
             placement="bottom-end"
