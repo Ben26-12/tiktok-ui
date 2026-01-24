@@ -5,7 +5,6 @@ import images from '~/assets/images';
 import styles from './Image.module.scss';
 const cx = classNames.bind(styles);
 function Image({ fallback: customFallback = images.noImage, className, src, ...props }, ref) {
-    console.log(images.noImage);
     const classes = cx('wrapper', {
         [className]: className,
     });

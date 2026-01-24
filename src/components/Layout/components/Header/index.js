@@ -1,34 +1,25 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faCircleQuestion,
-    faCircleXmark,
-    faCloudUpload,
     faCoins,
-    faCouch,
     faEarthAsia,
     faEllipsisVertical,
     faGear,
     faKeyboard,
-    faPaperPlane,
     faSignOut,
     faUser,
 } from '@fortawesome/free-solid-svg-icons';
-import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
-import { faMagnifyingGlass, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
-import TippyHeadless from '@tippyjs/react/headless';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
-import { useEffect, useState } from 'react';
 
-import AccountItem from '~/components/AccountItem';
 import images from '~/assets/images';
 import styles from './Header.module.scss';
-import { Wrapper as WrapperTippy } from '~/components/Popover';
 import Button from '~/components/Button';
 import Menu from '~/components/Popover/Menu';
-import { InboxIcon, MessageIcon, SearchIcon, UploadIcon } from '~/components/Icons';
+import { InboxIcon, MessageIcon, UploadIcon } from '~/components/Icons';
 import Image from '~/components/Image';
+import Search from '~/components/Layout/components/Search';
 
 const cx = classNames.bind(styles);
 const MENU_ITEMS = [
@@ -100,7 +91,6 @@ const USER_MENU_ITEMS = [
     },
 ];
 function Header() {
-    const [searchResults, setSearchResults] = useState([]);
     const onChange = (MenuItem) => {
         console.log(MenuItem);
     };
@@ -108,37 +98,15 @@ function Header() {
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
+                {/* logo  */}
                 <div className={cx('logo')}>
                     <img src={images.logo} alt="Tiktok" />
                 </div>
-                <TippyHeadless
-                    interactive={true}
-                    render={(attrs) => (
-                        <div {...attrs} tabIndex={-1} className={cx('search-results')}>
-                            {/* tạo riêng là để viết css cho thằng .wrapper, không thì mỗi lần tạo 1 drop như này sẽ phải
-                            đi viết css cho nó w100% etc */}
-                            <WrapperTippy>
-                                <h4 className={cx('search-title')}>Accounts</h4>
-                                <AccountItem />
-                                <AccountItem />
-                                <AccountItem />
-                                <AccountItem />
-                                <AccountItem />
-                            </WrapperTippy>
-                        </div>
-                    )}
-                >
-                    <div className={cx('search')}>
-                        <input placeholder="Search accounts and videos" spellCheck={false} />
-                        <button className={cx('clear')}>
-                            <FontAwesomeIcon icon={faCircleXmark} />
-                        </button>
-                        <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />
-                        <button className={cx('search-btn')}>
-                            <SearchIcon />
-                        </button>
-                    </div>
-                </TippyHeadless>
+
+                {/* search */}
+                <Search />
+
+                {/* actions */}
                 <div className={cx('actions')}>
                     {isUser ? (
                         <>
