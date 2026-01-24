@@ -50,6 +50,19 @@
     transform: translateY(-50%);
     right: calc(var(--search-button-width) + 10px);
 }
+
+.loading {
+    animation: loading 1s infinite linear;
+}
+@keyframes loading {
+    0% {
+        transform: translateY(-50%) rotate(0);
+    }
+    100% {
+        transform: translateY(-50%) rotate(360deg);
+    }
+}
+
 .search-btn {
     width: var(--search-button-width);
     height: 100%;

@@ -1,8 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import TippyHeadless from '@tippyjs/react/headless';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 
 import AccountItem from '~/components/AccountItem';
@@ -16,42 +15,58 @@ function Search() {
     const [searchResults, setSearchResults] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const [isFocus, setIsFocus] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
     const inputRef = useRef();
+    let timerID = useRef();
+    const handleTyping = (e) => {
+        if (!e.target.value.startsWith(' ')) {
+            setSearchValue(e.target.value);
+        }
+    };
     const handleClear = () => {
         setSearchValue('');
         inputRef.current.focus();
     };
-    // const timerID = useRef();
+
     useEffect(() => {
-        setTimeout(() => {
-            setSearchResults([1, 2, 3]);
-        }, 2000);
-    }, []);
-
-    // const handleTyping = (e) => {
-    //     if(timerID) clearTimeout(timerID)
-    //     setSearchValue(e.target.value);
-    //     setTimeout(() => {
-    //         callingAPI()
-
-    //         setData(data)
-    //     }, 300);
-    // };
+        if (timerID.current) clearTimeout(timerID.current);
+        timerID.current = setTimeout(() => {
+            if (isFocus) setIsLoading(true);
+            fetch('https://jsonplaceholder.typicode.com/users')
+                .then((res) => res.json())
+                .then((data) => {
+                    const processedValue = searchValue.toLowerCase().trim();
+                    let matchedUsers;
+                    if (processedValue === '') {
+                        matchedUsers = [];
+                    } else {
+                        matchedUsers = Array.from(
+                            data.filter((user) => {
+                                return user.name.toLowerCase().includes(processedValue);
+                            }),
+                        );
+                    }
+                    const fiveUsers = matchedUsers.length > 5 ? matchedUsers.splice(0, 5) : matchedUsers;
+                    setSearchResults([...fiveUsers]);
+                    setIsLoading(false);
+                });
+        }, 500);
+    }, [searchValue]);
     return (
         <TippyHeadless
-            visible={searchResults.length > 1 && isFocus}
+            visible={searchResults.length > 0 && isFocus}
             interactive={true}
+            placement="bottom"
             render={(attrs) => (
                 <div {...attrs} tabIndex={-1} className={cx('search-results')}>
                     {/* tạo riêng là để viết css cho thằng .wrapper, không thì mỗi lần tạo 1 drop như này sẽ phải
                             đi viết css cho nó w100% etc */}
                     <WrapperTippy>
                         <h4 className={cx('search-title')}>Accounts</h4>
-                        <AccountItem />
-                        <AccountItem />
-                        <AccountItem />
-                        <AccountItem />
-                        <AccountItem />
+                        {searchResults.map((result) => {
+                            return <AccountItem result={result} key={result.id} />;
+                        })}
                     </WrapperTippy>
                 </div>
             )}
@@ -61,17 +76,17 @@ function Search() {
                 <input
                     ref={inputRef}
                     value={searchValue}
-                    onChange={(e) => setSearchValue(e.target.value)}
+                    onChange={(e) => handleTyping(e)}
                     placeholder="Search accounts and videos"
                     spellCheck={false}
                     onFocus={() => setIsFocus(true)}
                 />
-                {searchValue && (
+                {searchValue && isLoading === false && (
                     <button onClick={handleClear} className={cx('clear')}>
                         <FontAwesomeIcon icon={faCircleXmark} />
                     </button>
                 )}
-                {/* <FontAwesomeIcon className={cx('loading')} icon={faSpinner} /> */}
+                {isLoading && <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />}
                 <button className={cx('search-btn')}>
                     <SearchIcon />
                 </button>

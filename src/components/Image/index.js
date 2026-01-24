@@ -14,7 +14,7 @@ function Image({ fallback: customFallback = images.noImage, className, src, ...p
         <img
             className={classes}
             onError={() => setFallback(customFallback)}
-            src={fallback || src}
+            src={customFallback || src}
             ref={ref}
             {...props}
         />
