@@ -8,7 +8,8 @@ import AccountItem from '~/components/AccountItem';
 import { SearchIcon } from '~/components/Icons';
 import { Wrapper as WrapperTippy } from '~/components/Popover';
 import styles from './Search.module.scss';
-
+import { useDebounce } from '~/hooks';
+import searchService from '~/ApiServices/searchService';
 const cx = classNames.bind(styles);
 
 function Search() {
@@ -18,41 +19,42 @@ function Search() {
     const [isLoading, setIsLoading] = useState(false);
 
     const inputRef = useRef();
-    let timerID = useRef();
+    const debounceValue = useDebounce(searchValue, 500);
+
     const handleTyping = (e) => {
         if (!e.target.value.startsWith(' ')) {
             setSearchValue(e.target.value);
         }
+        if (e.target.value === '') {
+            setSearchResults([]);
+        }
     };
     const handleClear = () => {
         setSearchValue('');
+        setSearchResults([]);
         inputRef.current.focus();
+    };
+    const handleSearchData = (data) => {
+        const processedValue = debounceValue.toLowerCase().trim();
+        let matchedUsers;
+        if (processedValue === '') {
+            matchedUsers = [];
+        } else {
+            matchedUsers = Array.from(
+                data.filter((user) => {
+                    return user.name.toLowerCase().includes(processedValue);
+                }),
+            );
+        }
+        const fiveUsers = matchedUsers.length > 5 ? matchedUsers.splice(0, 5) : matchedUsers;
+        setSearchResults([...fiveUsers]);
+        setIsLoading(false);
     };
 
     useEffect(() => {
-        if (timerID.current) clearTimeout(timerID.current);
-        timerID.current = setTimeout(() => {
-            if (isFocus) setIsLoading(true);
-            fetch('https://jsonplaceholder.typicode.com/users')
-                .then((res) => res.json())
-                .then((data) => {
-                    const processedValue = searchValue.toLowerCase().trim();
-                    let matchedUsers;
-                    if (processedValue === '') {
-                        matchedUsers = [];
-                    } else {
-                        matchedUsers = Array.from(
-                            data.filter((user) => {
-                                return user.name.toLowerCase().includes(processedValue);
-                            }),
-                        );
-                    }
-                    const fiveUsers = matchedUsers.length > 5 ? matchedUsers.splice(0, 5) : matchedUsers;
-                    setSearchResults([...fiveUsers]);
-                    setIsLoading(false);
-                });
-        }, 500);
-    }, [searchValue]);
+        if (debounceValue === '') return;
+        searchService().then((data) => handleSearchData(data)); //tách service search
+    }, [debounceValue]);
     return (
         <TippyHeadless
             visible={searchResults.length > 0 && isFocus}
