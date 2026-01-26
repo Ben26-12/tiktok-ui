@@ -8,7 +8,7 @@ import MenuItem from './MenuItem';
 import Header from './Header';
 const cx = classNames.bind(styles);
 
-function Menu({ children, items, onChange }) {
+function Menu({ children, items, hideOnClick = false, onChange }) {
     const [history, setHistory] = useState([{ data: items }]);
     const current = history[history.length - 1];
 
@@ -36,12 +36,13 @@ function Menu({ children, items, onChange }) {
             interactive
             offset={[12, 8]}
             delay={[0, 500]}
+            hideOnClick={hideOnClick}
             placement="bottom-end"
             render={(attrs) => (
                 <div {...attrs} tabIndex={-1} className={cx('menu-list')}>
                     <WrapperTippy className={cx('menu-popover')}>
                         {history.length > 1 && <Header title="Language" onBack={handleBack} />}
-                        {renderItems()}
+                        <div className={cx('menu-body')}>{renderItems()}</div>
                     </WrapperTippy>
                 </div>
             )}

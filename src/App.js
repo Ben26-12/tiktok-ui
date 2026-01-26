@@ -5,26 +5,6 @@ import { DefaultLayout } from '~/components/Layout';
 function App() {
     return (
         <Router>
-            <div className="App">
-                <h1>Welcome to Ben's project</h1>
-                <ul>
-                    {publicRoutes.map((route, index) => {
-                        const pageName = route.catagoryName;
-                        return (
-                            <li key={index}>
-                                <NavLink
-                                    className={({ isActive }) => {
-                                        return isActive ? 'activeCatagory' : undefined;
-                                    }}
-                                    to={route.path}
-                                >
-                                    {pageName}
-                                </NavLink>
-                            </li>
-                        );
-                    })}
-                </ul>
-            </div>
             <Routes>
                 {publicRoutes.map((route, index) => {
                     const Page = route.component;
