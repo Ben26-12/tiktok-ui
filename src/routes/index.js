@@ -4,35 +4,35 @@ import Following from '~/Pages/Following';
 import Profile from '~/Pages/Profile';
 import Upload from '~/Pages/Upload';
 import Search from '~/Pages/Search';
+import Live from '~/Pages/Live';
 import { HeaderOnly } from '~/layouts';
 
 const publicRoutes = [
     {
         path: config.routesConfig.home,
-        catagoryName: 'Home',
         component: Home,
     },
     {
         path: config.routesConfig.following,
-        catagoryName: 'Following',
         component: Following,
     },
     {
         path: config.routesConfig.profile,
-        catagoryName: 'Profile',
         component: Profile,
     },
     {
         path: config.routesConfig.upload,
-        catagoryName: 'Upload',
         component: Upload,
         layout: HeaderOnly,
     },
     {
         path: config.routesConfig.search,
-        catagoryName: 'Search',
         component: Search,
         layout: null,
+    },
+    {
+        path: config.routesConfig.live,
+        component: Live,
     },
 ];
 

@@ -1,33 +1,41 @@
-import styles from './SideBar.module.scss';
 import classNames from 'classnames/bind';
-import { NavLink } from 'react-router-dom';
 
-import { publicRoutes } from '~/routes';
+import config from '~/config';
+import Menu, { MenuItem } from './Menu';
+import styles from './SideBar.module.scss';
+import {
+    HomeIcon,
+    UserGroupIcon,
+    LiveIcon,
+    LiveActiveIcon,
+    UserGroupActiveIcon,
+    HomeActiveIcon,
+} from '~/components/Icons';
 const cx = classNames.bind(styles);
 
 function SideBar() {
     return (
         <aside className={cx('container')}>
-            <h1>SideBar</h1>
-            <div className="Navigator">
-                <ul>
-                    {publicRoutes.map((route, index) => {
-                        const pageName = route.catagoryName;
-                        return (
-                            <li key={index}>
-                                <NavLink
-                                    className={({ isActive }) => {
-                                        return isActive ? 'activeCatagory' : undefined;
-                                    }}
-                                    to={route.path}
-                                >
-                                    {pageName}
-                                </NavLink>
-                            </li>
-                        );
-                    })}
-                </ul>
-            </div>
+            <Menu>
+                <MenuItem
+                    to={config.routesConfig.home}
+                    title="For you"
+                    icon={<HomeIcon />}
+                    activeIcon={<HomeActiveIcon />}
+                />
+                <MenuItem
+                    to={config.routesConfig.following}
+                    title="Following"
+                    icon={<UserGroupIcon />}
+                    activeIcon={<UserGroupActiveIcon />}
+                />
+                <MenuItem
+                    to={config.routesConfig.live}
+                    title="LIVE"
+                    icon={<LiveIcon />}
+                    activeIcon={<LiveActiveIcon />}
+                />
+            </Menu>
         </aside>
     );
 }
