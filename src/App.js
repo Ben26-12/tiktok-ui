@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
 import { publicRoutes } from './routes';
 import { useState, Fragment } from 'react';
-import { DefaultLayout } from '~/components/Layout';
+import DefaultLayout from '~/layouts';
 function App() {
     return (
         <Router>

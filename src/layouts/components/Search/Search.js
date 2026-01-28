@@ -9,7 +9,7 @@ import { SearchIcon } from '~/components/Icons';
 import { Wrapper as WrapperTippy } from '~/components/Popover';
 import styles from './Search.module.scss';
 import { useDebounce } from '~/hooks';
-import * as searchService from '~/ApiServices/searchService';
+import * as service from '~/services/searchService';
 const cx = classNames.bind(styles);
 
 function Search() {
@@ -54,7 +54,7 @@ function Search() {
 
     useEffect(() => {
         if (debounceValue === '') return;
-        searchService.search().then((data) => handleSearchData(data)); //tách service search
+        service.search().then((data) => handleSearchData(data)); //tách service search
     }, [debounceValue]);
     return (
         //div fix lỗi tippy

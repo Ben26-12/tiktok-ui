@@ -20,8 +20,8 @@ import Button from '~/components/Button';
 import Menu from '~/components/Popover/Menu';
 import { InboxIcon, MessageIcon, UploadIcon } from '~/components/Icons';
 import Image from '~/components/Image';
-import Search from '~/components/Layout/components/Search';
-import routesConfig from '~/config/routes';
+import Search from '~/layouts/components/Search';
+import config from '~/config';
 
 const cx = classNames.bind(styles);
 const MENU_ITEMS = [
@@ -102,12 +102,11 @@ function Header() {
             <div className={cx('inner')}>
                 {/* logo  */}
 
-                <Link to={routesConfig.home}>
+                <Link to={config.routesConfig.home}>
                     <div className={cx('logo')}>
                         <img src={images.logo} alt="Tiktok" />
                     </div>
                 </Link>
-
                 {/* search */}
                 <Search />
 
@@ -136,7 +135,9 @@ function Header() {
                     ) : (
                         <>
                             <Button text>Upload</Button>
-                            <Button primary>Log in</Button>
+                            <Button primary to="/">
+                                Log in
+                            </Button>
                         </>
                     )}
                     <Menu items={isUser ? USER_MENU_ITEMS : MENU_ITEMS} onChange={onChange}>
