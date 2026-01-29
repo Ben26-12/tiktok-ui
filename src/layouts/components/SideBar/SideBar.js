@@ -2,6 +2,7 @@ import classNames from 'classnames/bind';
 
 import config from '~/config';
 import Menu, { MenuItem } from './Menu';
+import SuggestedAccounts from './SuggestedAccounts';
 import styles from './SideBar.module.scss';
 import {
     HomeIcon,
@@ -16,6 +17,7 @@ const cx = classNames.bind(styles);
 function SideBar() {
     return (
         <aside className={cx('container')}>
+            {/* Menu nav */}
             <Menu>
                 <MenuItem
                     to={config.routesConfig.home}
@@ -36,6 +38,11 @@ function SideBar() {
                     activeIcon={<LiveActiveIcon />}
                 />
             </Menu>
+            {/* Suggested account */}
+            <SuggestedAccounts label="Suggested accounts" />
+
+            {/* Following account */}
+            <SuggestedAccounts label="Following accounts" />
         </aside>
     );
 }
