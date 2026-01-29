@@ -16,8 +16,8 @@
 }
 
 .avatar {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     object-fit: cover;
     border-radius: 50%;
 }
@@ -39,9 +39,10 @@
     font-size: 1.4rem;
     color: #20d5ec;
 }
-.name {
+.username {
     font-size: 1.2rem;
-    opacity: #161823bf;
+    color: #161823bf;
+    font-weight: 700;
 }
 .more-btn {
     padding: 8px;
