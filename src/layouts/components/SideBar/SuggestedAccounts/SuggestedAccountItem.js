@@ -7,7 +7,9 @@ import styles from './SuggestedAccounts.module.scss';
 import TippyHeadless from '@tippyjs/react/headless';
 import { Wrapper as WrapperTippy } from '~/components/Popover';
 import AccountPreview from './AccountPreview';
+import Image from '~/components/Image';
 const cx = classNames.bind(styles);
+
 function SuggestedAccountItem() {
     const renderPreview = (attrs) => {
         return (
@@ -21,7 +23,7 @@ function SuggestedAccountItem() {
     return (
         <TippyHeadless placement="bottom" delay={[1000, 0]} interactive offset={[-20, 0]} render={renderPreview}>
             <div className={cx('account-item')}>
-                <img
+                <Image
                     className={cx('avatar')}
                     src="https://lh3.googleusercontent.com/a/ACg8ocKlqzKhMhkZyeqUReHf70LqzFttrSpygiHSpGWkd9NhJqDS9yn8=s288-c-no"
                     alt="BenNguyen"

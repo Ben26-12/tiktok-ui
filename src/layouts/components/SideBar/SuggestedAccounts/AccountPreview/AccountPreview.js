@@ -4,13 +4,14 @@ import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './AccountPreview.module.scss';
 import Button from '~/components/Button';
+import Image from '~/components/Image';
 const cx = classNames.bind(styles);
 
 function AccountPreview() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
-                <img
+                <Image
                     className={cx('avatar')}
                     src="https://lh3.googleusercontent.com/a/ACg8ocKlqzKhMhkZyeqUReHf70LqzFttrSpygiHSpGWkd9NhJqDS9yn8=s288-c-no"
                     alt="Ben Nguyen"

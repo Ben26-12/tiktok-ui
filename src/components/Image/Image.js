@@ -9,13 +9,13 @@ function Image({ fallback: customFallback = images.noImage, className, src, ...p
     const classes = cx('wrapper', {
         [className]: className,
     });
-    const [fallback, setFallback] = useState();
+    const [myFallback, setMyFallback] = useState();
 
     return (
         <img
             className={classes}
-            onError={() => setFallback(customFallback)}
-            src={customFallback || src}
+            onError={() => setMyFallback(customFallback)}
+            src={myFallback || src}
             ref={ref}
             {...props}
         />
